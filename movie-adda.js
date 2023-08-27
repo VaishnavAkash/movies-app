@@ -58,7 +58,7 @@ function renderMovies(movies) {
     const rs = favMovies.find((eFavMovie) => eFavMovie.title == title);
 
     listItem.innerHTML = `
-            <img class="poster" src="${imageUrl}" alt="${title}">
+            <img class="poster" src="${imageUrl?imageUrl:'https://i.pinimg.com/736x/7c/ee/6f/7cee6fa507169843e3430a90dd5377d4.jpg'}" alt="${title}">
             <p class="title">${title}</p>
             <section class="vote-fav">
                 <section>
