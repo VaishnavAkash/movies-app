@@ -1,6 +1,20 @@
-const moviesList = document.getElementById("movies-list");
+// Essential Data
 const APIKEY = "f531333d637d0c44abc85b3e74db2186";
 let movies = [];
+// Selectors
+const prevBtn = document.getElementById("prev-button");
+prevBtn.disabled = true;
+const nextBtn = document.getElementById("next-button");
+const currPage = document.getElementById("currPage");
+const tPage = document.getElementById("totalPage");
+const form= document.getElementById('formSubmit');
+const moviesList = document.getElementById("movies-list");
+const searchBtn = document.getElementById("search-button");
+const searchInput = document.getElementById("search-input");
+const sortByDateBtn = document.getElementById("sort-by-date");
+const sortByRating = document.getElementById("sort-by-rating");
+const allTab = document.getElementById("all-tab");
+const favTab = document.getElementById("favorits-tab");
 
 let currentPage = 1,
   totalPages = 1;
@@ -116,6 +130,11 @@ async function fetchMovies() {
 
 fetchMovies();
 
+form.addEventListener('submit',(e)=>{
+  e.preventDefault();
+  fetchMovies();
+});
+
 async function searchMovies() {
   const searchText = searchInput.value;
 
@@ -130,8 +149,6 @@ async function searchMovies() {
   renderMovies(movies);
 }
 
-const searchBtn = document.getElementById("search-button");
-const searchInput = document.getElementById("search-input");
 
 searchBtn.addEventListener("click", searchMovies);
 
@@ -173,11 +190,6 @@ function getNextPageFunc() {
   }
 }
 
-const prevBtn = document.getElementById("prev-button");
-prevBtn.disabled = true;
-const nextBtn = document.getElementById("next-button");
-const currPage = document.getElementById("currPage");
-const tPage = document.getElementById("totalPage");
 
 prevBtn.addEventListener("click", getPreviousPageFunc);
 nextBtn.addEventListener("click", getNextPageFunc);
@@ -238,16 +250,13 @@ function sortByRatingFunc() {
   }
 }
 
-const sortByDateBtn = document.getElementById("sort-by-date");
+
 
 sortByDateBtn.addEventListener("click", sortByDate);
-
-const sortByRating = document.getElementById("sort-by-rating");
 
 sortByRating.addEventListener("click", sortByRatingFunc);
 
 function onSearchChange(event) {
-  console.log("ADnhmm 2 secs done!");
   let val = event.target.value;
 
   if (val) {
@@ -344,8 +353,6 @@ function switchTab(event) {
   displayMovies();
 }
 
-const allTab = document.getElementById("all-tab");
-const favTab = document.getElementById("favorits-tab");
 
 allTab.addEventListener("click", switchTab);
 favTab.addEventListener("click", switchTab);
