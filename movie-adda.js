@@ -15,7 +15,7 @@ const sortByDateBtn = document.getElementById("sort-by-date");
 const sortByRating = document.getElementById("sort-by-rating");
 const allTab = document.getElementById("all-tab");
 const favTab = document.getElementById("favorits-tab");
-
+const pagination = document.getElementById('pagination');
 let currentPage = 1,
   totalPages = 1;
 
@@ -27,7 +27,7 @@ function getFavMoviesFromLocalStorage() {
 function addMovieInfoInLocalStorage(mInfo) {
   const localStorageMovies = getFavMoviesFromLocalStorage();
 
-  console.log(localStorageMovies);
+  console.log(localStorageMovies);  
 
   localStorage.setItem(
     "favouriteMovie",
@@ -50,7 +50,7 @@ function renderMovies(movies) {
 
   moviesList.innerHTML = "";
 
-  console.log(movies);
+  // console.log(movies);
 
   movies.map((eMovie) => {
     const { poster_path, title, vote_average, vote_count } = eMovie;
@@ -72,7 +72,7 @@ function renderMovies(movies) {
     const rs = favMovies.find((eFavMovie) => eFavMovie.title == title);
 
     listItem.innerHTML = `
-            <img class="poster" src="${imageUrl?imageUrl:'https://i.pinimg.com/736x/7c/ee/6f/7cee6fa507169843e3430a90dd5377d4.jpg'}" alt="${title}">
+            <img class="poster" src="${imageUrl?imageUrl:'https://static.thenounproject.com/png/3674270-200.png'}" alt="${title}">
             <p class="title">${title}</p>
             <section class="vote-fav">
                 <section>
@@ -92,8 +92,9 @@ function renderMovies(movies) {
     favIconBtn.addEventListener("click", (event) => {
       console.log(event.target);
       const { id } = event.target;
-      console.log(id);
+      console.log(id , 'Akash');
       const mInfo = JSON.parse(id);
+      // console.log(mInfo)
       if (favIconBtn.classList.contains("fa-solid")) {
         // unmark it
         // 1) remove the fa-solid from the facIconBtn
@@ -137,7 +138,6 @@ form.addEventListener('submit',(e)=>{
 
 async function searchMovies() {
   const searchText = searchInput.value;
-
   const resp = await fetch(
     `https://api.themoviedb.org/3/search/movie?query=${searchText}&api_key=${APIKEY}&include_adult=false&language=en-US&page=${currentPage}`
   );
@@ -153,29 +153,34 @@ async function searchMovies() {
 searchBtn.addEventListener("click", searchMovies);
 
 function getPreviousPageFunc() {
-  currentPage--;
+  console.log(currentPage);
+  currentPage= currentPage-1;
+  console.log(currentPage);
   currPage.innerText = currentPage;
 
-  fetchMovies();
-
+  
   if (currentPage == 1) {
     prevBtn.disabled = true;
   } else {
     prevBtn.disabled = false;
   }
-
+  
   if (currentPage >= totalPages) {
     nextBtn.disabled = true;
   } else {
     nextBtn.disabled = false;
   }
+  if(searchInput.value!='')searchMovies();
+  else fetchMovies();
 }
 
 function getNextPageFunc() {
-  currentPage++;
+  currentPage= currentPage+1;
+  console.log(currentPage);
+  console.log(totalPages);
   currPage.innerText = currentPage;
-
-  fetchMovies();
+  if(searchInput.value!='')searchMovies();
+  else fetchMovies();
 
   if (currentPage == 1) {
     prevBtn.disabled = true;
@@ -284,7 +289,10 @@ function renderFavMovies() {
   moviesList.innerHTML = "";
 
   const favMovies = getFavMoviesFromLocalStorage();
-
+  if(favMovies.length==0) {
+    let html= 'Try adding some Movies First🙂'
+    moviesList.append(html);
+  }
   favMovies.map((eFavMovie) => {
     let listItem = document.createElement("li");
     listItem.className = "card";
@@ -303,7 +311,7 @@ function renderFavMovies() {
     };
 
     listItem.innerHTML = `
-            <img class="poster" src="${imageUrl}" alt="${title}">
+            <img class="poster" src="${imageUrl?imageUrl:'https://static.thenounproject.com/png/3674270-200.png'}" alt="${title}">
             <p class="title">${title}</p>
             <section class="vote-fav">
                 <section>
@@ -321,8 +329,10 @@ function renderFavMovies() {
     favIconBtn.addEventListener("click", (event) => {
       // this will remove the card info from the local storage
       const { id } = event.target;
+      console.log(id);
+      console.log(event.target)
       const mInfo = JSON.parse(id);
-      console.log(mInfo);
+      // console.log(mInfo);
       removeMovieInfoFromLocalStorage(mInfo);
 
       // this will remove the card from the ui
@@ -337,9 +347,11 @@ function displayMovies() {
   if (allTab.classList.contains("active-tab")) {
     // all button, show all general movies
     renderMovies(movies);
+    pagination.style.display='block';
   } else {
     // fav button, show all fav movies
     renderFavMovies();
+    pagination.style.display='none';
   }
 }
 
