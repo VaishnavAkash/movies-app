@@ -112,6 +112,10 @@ footer {
     list-style-type: none;
 }
 
+.card:hover{
+     transform: scale(1.05);
+}
+
 .poster {
     width: 200px;
     height: 250px;
