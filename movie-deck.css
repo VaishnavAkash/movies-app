@@ -110,6 +110,7 @@ footer {
     margin: 10px;
     border-radius: 5px;
     list-style-type: none;
+    transition: 0.3s ease;
 }
 
 .card:hover{
