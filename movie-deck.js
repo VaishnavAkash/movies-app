@@ -278,7 +278,7 @@ function debounce(event) {
 
   timer = setTimeout(() => {
     onSearchChange(event);
-  }, 2000);
+  }, 1000);
 }
 
 searchInput.addEventListener("input", (event) => {
